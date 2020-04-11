@@ -53,7 +53,7 @@ async def execute(sql, args, autocommit=True):
 
 def create_args_string(num):
     L = []
-    for n in range(num):
+    for _ in range(num):
         L.append('?')
     return ', '.join(L)
 
@@ -110,12 +110,12 @@ class ModelMetaclass(type):
                 if v.primary_key:
                     # 找到主键:
                     if primaryKey:
-                        raise StandardError('Duplicate primary key for field: %s' % k)
+                        raise Exception('Duplicate primary key for field: %s' % k)
                     primaryKey = k
                 else:
                     fields.append(k)
         if not primaryKey:
-            raise StandardError('Primary key not found.')
+            raise Exception('Primary key not found.')
         for k in mappings.keys():
             attrs.pop(k)
         escaped_fields = list(map(lambda f: '`%s`' % f, fields))
